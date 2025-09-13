@@ -2,20 +2,29 @@ import { Router } from "express";
 
 export const getCoin = Router();
 
-getCoin.get("/", async (_req, res, next) => {
+getCoin.get("/", async (_req, res) => {
   try {
-    const resp = await fetch(
-      `https://api.coingecko.com/api/v3/ping?${process.env.COINGECKOAPI}`
+    const url =
+      "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd";
+    const options = {
+      method: "GET",
+      headers: { "x-cg-demo-api-key": process.env.COINGECKOAPI as string },
+      body: undefined,
+    };
+
+    const response = await fetch(
+      "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd",
+      options
     );
 
-    if (!resp.ok) {
-      const text = await resp.text();
-      return res.status(resp.status).json({ error: text });
+    if (!response.ok) {
+      const text = await response.text();
+      return res.status(response.status).json({ error: text });
     }
 
-    const data = await resp.json();
-    res.json(data); // e.g. { "gecko_says": "(V3) To the Moon!" }
+    const data = await response.json();
+    res.json(data);
   } catch (err) {
-    next(err);
+    console.log(err);
   }
 });

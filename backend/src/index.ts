@@ -8,7 +8,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use("/coin", getCoin);
+app.use("/coins", getCoin);
 
 app.listen(port, () => {
   console.log(`Starting on server on port ${port}`);
